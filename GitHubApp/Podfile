@@ -1,0 +1,11 @@
+platform :ios, '14.0'
+
+use_frameworks!
+
+target 'GitHubApp' do
+pod 'Alamofire', '~> 5.6.2'
+pod 'AlamofireImage'
+pod 'RealmSwift'
+pod 'SwiftyJSON'
+
+end
