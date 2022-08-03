@@ -8,7 +8,6 @@
 import Foundation
 import RealmSwift
 import Alamofire
-import SwiftyJSON
 
 struct ApiManager {
     
@@ -22,28 +21,56 @@ struct ApiManager {
     
     struct DecodableType: Decodable { let url: String }
     
+    // Get API data by URLSession
     func getUsers(_ user: String, onSuccess: @escaping (_ success: String) -> Void, onFailure: @escaping (_ failure: Any) -> Void) {
         
         if user != "" {
             
-            let url = "\(self.apiUrl)search/users?q=\(user)+in:fullname"
-        
-            AF.request(url, headers: ApiManager().headers).responseDecodable(of: DecodableType.self) { response in
-            
-                if let json = response.data {
-                    
-                    let decodedData = JSON(json)
-                    
-                    if decodedData["items"].exists() {
-                    
-                        for userObj in decodedData["items"] {
-                            self.addUser(userObj.1)
+            if let url = URL(string: "\(self.apiUrl)search/users?q=\(user)+in:fullname") {
+                
+                URLSession.shared.fetchUsers(from: url) { data in
+                    switch data {
+                    case .success(let users):
+                        
+                        for userDekoded in users.items {
+                            self.addUser(usedDecoder: userDekoded)
                         }
                         
-                        onSuccess("API success")
-                    }
-                    else {
+                    case .failure(let err):
+                        
+                        print("Fetching failed with: \(err)")
                         onFailure(ErrorMessages.shared.checkErrorCode(.invalidResponse))
+                    }
+                }
+            }
+            else {
+                onFailure(ErrorMessages.shared.checkErrorCode(.invalidRequest))
+            }
+        }
+        else {
+            onFailure(ErrorMessages.shared.checkErrorCode(.paramNotFound))
+        }
+    }
+    
+    // Get API data by Alamofire
+    func getUsersAF(_ user: String, onSuccess: @escaping (_ success: String) -> Void, onFailure: @escaping (_ failure: Any) -> Void) {
+        
+        if user != "" {
+            
+            let url = "\(self.apiUrl)search/users?q=\(user)+in:fullname"
+            AF.request(url, headers: ApiManager().headers).responseDecodable(of: DecodableType.self) { response in
+
+                if let json = response.data {
+
+                    do {
+                        let decodedData = try JSONDecoder().decode(UserDecoder.self, from: json)
+                        for userDecoder in decodedData.items {
+                            self.addUser(usedDecoder: userDecoder)
+                        }
+                    }
+                    catch let err {
+                        onFailure(ErrorMessages.shared.checkErrorCode(.invalidResponse))
+                        print(err.localizedDescription)
                     }
                 }
                 else {
@@ -54,69 +81,29 @@ struct ApiManager {
         else {
             onFailure(ErrorMessages.shared.checkErrorCode(.paramNotFound))
         }
+        
     }
     
-    func addUser(_ userObj: JSON) {
+    func addUser(usedDecoder: UserDecoder.Item) {
         
-        var type              = ""
-        var repos_url         = ""
-        var login             = ""
-        var organizations_url = ""
-        var url               = ""
-        var avatar_url        = ""
-        var html_url          = ""
-        var score             = 0
-
-        if let typeStr = userObj["type"].string {
-            type = typeStr
-        }
-
-        if let repos_urlStr = userObj["repos_url"].string {
-            repos_url = repos_urlStr
-        }
-
-        if let loginStr = userObj["login"].string {
-            login = loginStr
-        }
-
-        if let organizations_urlStr = userObj["organizations_url"].string {
-            organizations_url = organizations_urlStr
-        }
-
-        if let urlStr = userObj["url"].string {
-            url = urlStr
-        }
-
-        if let avatar_urlStr = userObj["avatar_url"].string {
-            avatar_url = avatar_urlStr
-        }
-
-        if let html_urlStr = userObj["html_url"].string {
-            html_url = html_urlStr
-        }
-        
-        if let scoreStr = userObj["score"].int {
-            score = scoreStr
-        }
-        
-        if login != "" {
+        if usedDecoder.login != "" {
             let userObject = UserObject(value: [
-                "type":         type,
-                "repos_url":    repos_url,
-                "login":        login,
-                "organizations_url": organizations_url,
-                "url":          url,
-                "avatar_url":   avatar_url,
-                "html_url":     html_url,
-                "score":        String(score),
+                "type":         usedDecoder.type,
+                "repos_url":    usedDecoder.repos_url,
+                "login":        usedDecoder.login,
+                "organizations_url": usedDecoder.organizations_url,
+                "url":          usedDecoder.url,
+                "avatar_url":   usedDecoder.avatar_url,
+                "html_url":     usedDecoder.html_url,
+                "score":        String(usedDecoder.score),
                 "toShow":       true,
                 "visited":      false
             ])
-
+            
             do {
                 let realm = try Realm()
 
-                let users = realm.objects(UserObject.self).filter("login == %@", login)
+                let users = realm.objects(UserObject.self).filter("login == %@", usedDecoder.login)
 
                 for c in users {
                     try! realm.write {
@@ -134,5 +121,6 @@ struct ApiManager {
             }
         }
     }
+    
     
 }

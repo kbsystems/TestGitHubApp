@@ -9,7 +9,6 @@ import Foundation
 import Combine
 import RealmSwift
 import Alamofire
-import SwiftyJSON
 
 final class UserViewModel: ObservableObject {
     

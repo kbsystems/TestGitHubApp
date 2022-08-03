@@ -23,6 +23,8 @@
 		297E6B5F289424C200AB5889 /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297E6B5E289424C200AB5889 /* ApiManager.swift */; };
 		297E6B612894FF2300AB5889 /* ObiectTypeChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297E6B602894FF2300AB5889 /* ObiectTypeChecker.swift */; };
 		297E6B63289562D800AB5889 /* ErrorMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297E6B62289562D800AB5889 /* ErrorMessages.swift */; };
+		297E6BE9289A970D00AB5889 /* UserDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297E6BE8289A970D00AB5889 /* UserDecoder.swift */; };
+		297E6BEB289A9F0200AB5889 /* URLSessionFetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297E6BEA289A9F0200AB5889 /* URLSessionFetch.swift */; };
 		58F32BD72356CE3420852F11 /* Pods_GitHubApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E69D721B10CDA526EB398FFD /* Pods_GitHubApp.framework */; };
 /* End PBXBuildFile section */
 
@@ -64,6 +66,8 @@
 		297E6B5E289424C200AB5889 /* ApiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
 		297E6B602894FF2300AB5889 /* ObiectTypeChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObiectTypeChecker.swift; sourceTree = "<group>"; };
 		297E6B62289562D800AB5889 /* ErrorMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessages.swift; sourceTree = "<group>"; };
+		297E6BE8289A970D00AB5889 /* UserDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDecoder.swift; sourceTree = "<group>"; };
+		297E6BEA289A9F0200AB5889 /* URLSessionFetch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionFetch.swift; sourceTree = "<group>"; };
 		E3C821417EFA8BDB73573D63 /* Pods-GitHubApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GitHubApp.debug.xcconfig"; path = "Target Support Files/Pods-GitHubApp/Pods-GitHubApp.debug.xcconfig"; sourceTree = "<group>"; };
 		E69D721B10CDA526EB398FFD /* Pods_GitHubApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GitHubApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -179,6 +183,7 @@
 			children = (
 				297E6B5528940E7D00AB5889 /* User.swift */,
 				297E6B5728940E8A00AB5889 /* UserObject.swift */,
+				297E6BE8289A970D00AB5889 /* UserDecoder.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -186,6 +191,7 @@
 		297E6B4E28940C9900AB5889 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				297E6BEA289A9F0200AB5889 /* URLSessionFetch.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -405,7 +411,9 @@
 				297E6B5F289424C200AB5889 /* ApiManager.swift in Sources */,
 				297E6B5B2894118900AB5889 /* UserDetailView.swift in Sources */,
 				297E6B5428940E0900AB5889 /* UserViewModel.swift in Sources */,
+				297E6BE9289A970D00AB5889 /* UserDecoder.swift in Sources */,
 				297E6B5228940DC100AB5889 /* NetworkMonitor.swift in Sources */,
+				297E6BEB289A9F0200AB5889 /* URLSessionFetch.swift in Sources */,
 				297E6B63289562D800AB5889 /* ErrorMessages.swift in Sources */,
 				297E6B5628940E7D00AB5889 /* User.swift in Sources */,
 				297E6B232893EF3800AB5889 /* GitHubAppApp.swift in Sources */,
